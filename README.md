@@ -31,3 +31,14 @@ This is inspired by Meth-Meth-Method's [super mario game](https://github.com/met
 
 If you have any Improvements/Ideas/Refactors feel free to contact me or make a Pull Request.
 The code needs still alot of refactoring as it is right now, so I appreciate any kind of Contribution.
+
+
+## Sentiment Analysis Module
+
+A full sentiment analysis pipeline is available in `sentiment_system/`, including preprocessing, model training, mining, visualization, and an encapsulated reusable system class + CLI.
+
+```bash
+python sentiment_system/run_pipeline.py
+```
+
+See details in `sentiment_system/README.md`.
