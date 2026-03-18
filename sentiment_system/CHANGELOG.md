@@ -13,3 +13,8 @@
 - 训练升级为多方法对比：LogisticRegression、MultinomialNB、SGDClassifier(log_loss)。
 - 指标输出包含模型对比结果与最佳模型选择。
 - 分析支持三分类标签（-1/0/1），新增预测分布统计。
+
+## v1.2.1
+- 预处理移除 `text,label` 兼容逻辑，只保留 `content,sentiment_value`。
+- 示例原始数据列名同步为 `content,sentiment_value`。
+- 文档同步更新为统一第二种数据格式。

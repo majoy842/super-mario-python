@@ -1,4 +1,4 @@
-"""预处理模块：清洗评论数据，并兼容多种数据列名。"""
+"""预处理模块：清洗评论数据（仅支持 content,sentiment_value 列）。"""
 
 from __future__ import annotations
 
@@ -20,16 +20,13 @@ def clean_text(text: str) -> str:
 
 
 def _normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """把不同数据集的列名统一成 text / label。"""
-    if {"text", "label"}.issubset(df.columns):
-        return df[["text", "label"]].copy()
-
+    """只接受 content,sentiment_value，并转换为 text,label。"""
     if {"content", "sentiment_value"}.issubset(df.columns):
         out = df[["content", "sentiment_value"]].copy()
         out.columns = ["text", "label"]
         return out
 
-    raise ValueError("输入文件需要包含(text,label)或(content,sentiment_value)列")
+    raise ValueError("输入文件必须包含 content,sentiment_value 两列")
 
 
 def preprocess(input_path: Path, output_path: Path) -> pd.DataFrame:
@@ -41,7 +38,7 @@ def preprocess(input_path: Path, output_path: Path) -> pd.DataFrame:
     df["text"] = df["text"].apply(clean_text)
     df = df[df["text"] != ""]
 
-    # 兼容 -1/0/1 或 0/1 标注
+    # 兼容 -1/0/1 三分类标注
     df["label"] = pd.to_numeric(df["label"], errors="coerce")
     df = df.dropna(subset=["label"])
     df["label"] = df["label"].astype(int)
