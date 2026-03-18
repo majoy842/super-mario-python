@@ -13,33 +13,26 @@
 
 ## 1. 分模块测试
 在 PyCharm 中按顺序运行：
-
 - `sentiment_system/src/preprocess.py`
 - `sentiment_system/src/train.py`
 - `sentiment_system/src/analyze.py`
 - `sentiment_system/src/visualize.py`
 
 检查 `sentiment_system/outputs/` 是否有：
-- metrics.json
+- metrics.json（包含多个方法的对比）
 - analysis.json
 - predictions.csv
 - summary_bar.png
 - top_words.png
 
 ## 2. 自动分步测试
-运行：
-
 ```bash
 python sentiment_system/tests/test_by_module.py
 ```
-
 控制台出现“测试通过”表示核心流程正常。
 
 ## 3. 一键全流程
-运行：
-
 ```bash
 python sentiment_system/run_pipeline.py
 ```
-
 控制台出现“完成！”并且输出图片存在即可。

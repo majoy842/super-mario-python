@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -24,7 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent
 
 
 def main() -> None:
-    raw_path = BASE_DIR / "data/raw/reviews.csv"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/reviews.csv"))
+    args = parser.parse_args()
+
+    raw_path = Path(args.input)
     clean_path = BASE_DIR / "data/processed/reviews_clean.csv"
     model_path = BASE_DIR / "models/sentiment_model.joblib"
     metrics_path = BASE_DIR / "outputs/metrics.json"
@@ -36,7 +41,8 @@ def main() -> None:
     analysis = run_analysis(clean_path, model_path, analysis_path)
     visualize(metrics_path, analysis_path, output_dir)
 
-    print(f"完成！准确率={metrics['accuracy']:.4f}，正向占比={analysis['pred_positive_ratio']:.2%}")
+    top = metrics['results'][0]
+    print(f"完成！最佳模型={metrics['best_model']}，macro_f1={top['macro_f1']:.4f}，正向占比={analysis['pred_positive_ratio']:.2%}")
 
 
 if __name__ == "__main__":

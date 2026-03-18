@@ -29,7 +29,8 @@ def run_test() -> None:
     assert len(df) > 0
 
     metrics = train_model(clean_path, model_path, metrics_path)
-    assert "accuracy" in metrics
+    assert "best_model" in metrics
+    assert len(metrics.get("results", [])) >= 2
 
     result = run_analysis(clean_path, model_path, analysis_path)
     assert "pred_positive_ratio" in result

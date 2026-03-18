@@ -16,7 +16,6 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
-    """生成 3 张图：摘要柱状图、关键词柱状图、正向词云。"""
     out_dir.mkdir(parents=True, exist_ok=True)
 
     with metrics_path.open("r", encoding="utf-8") as f:
@@ -24,8 +23,10 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     with analysis_path.open("r", encoding="utf-8") as f:
         analysis = json.load(f)
 
+    best_acc = metrics["results"][0]["accuracy"]
+
     plt.figure(figsize=(6, 4))
-    plt.bar(["accuracy", "positive_ratio"], [metrics["accuracy"], analysis["pred_positive_ratio"]])
+    plt.bar(["best_accuracy", "positive_ratio"], [best_acc, analysis["pred_positive_ratio"]])
     plt.ylim(0, 1)
     plt.tight_layout()
     plt.savefig(out_dir / "summary_bar.png", dpi=120)

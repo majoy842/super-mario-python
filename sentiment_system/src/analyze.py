@@ -1,4 +1,4 @@
-"""分析模块：用训练好的模型做预测并统计关键词。"""
+"""分析模块：用最佳模型做预测并统计关键词。"""
 
 from __future__ import annotations
 
@@ -16,7 +16,6 @@ STOPWORDS = {"的", "了", "很", "也", "就", "都", "和", "太", "不"}
 
 
 def tokenize(text: str) -> list[str]:
-    """中文分词并去掉常见停用词。"""
     words = []
     for w in jieba.cut(str(text)):
         w = w.strip()
@@ -25,13 +24,23 @@ def tokenize(text: str) -> list[str]:
     return words
 
 
+def _positive_prob(model, texts: pd.Series) -> list[float]:
+    """优先使用predict_proba提取正向(1)概率；不支持时回退为0/1标签概率。"""
+    if hasattr(model, "predict_proba"):
+        probs = model.predict_proba(texts)
+        classes = list(model.classes_)
+        if 1 in classes:
+            return probs[:, classes.index(1)].tolist()
+    preds = model.predict(texts)
+    return [1.0 if int(x) == 1 else 0.0 for x in preds]
+
+
 def run_analysis(data_path: Path, model_path: Path, output_path: Path) -> dict:
-    """预测情感并输出统计结果。"""
     df = pd.read_csv(data_path)
     model = joblib.load(model_path)
 
     df["pred"] = model.predict(df["text"])
-    df["positive_prob"] = model.predict_proba(df["text"])[:, 1]
+    df["positive_prob"] = _positive_prob(model, df["text"])
 
     pos_words: list[str] = []
     neg_words: list[str] = []
@@ -40,12 +49,15 @@ def run_analysis(data_path: Path, model_path: Path, output_path: Path) -> dict:
         words = tokenize(row["text"])
         if int(row["pred"]) == 1:
             pos_words.extend(words)
-        else:
+        elif int(row["pred"]) == -1:
             neg_words.extend(words)
+
+    class_dist = {str(int(k)): int(v) for k, v in Counter(df["pred"]).items()}
 
     result = {
         "sample_count": int(len(df)),
         "pred_positive_ratio": float((df["pred"] == 1).mean()),
+        "pred_distribution": class_dist,
         "top_positive_words": Counter(pos_words).most_common(10),
         "top_negative_words": Counter(neg_words).most_common(10),
     }
