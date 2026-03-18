@@ -22,3 +22,8 @@
 ## v1.2.2
 - 默认原始数据路径切换为 `sentiment_system/data/raw/earphone_sentiment.csv`。
 - 运行脚本、预处理和测试脚本同步使用新数据集路径。
+
+## v1.2.3
+- 训练结果新增 Accuracy、Precision、Recall、F1-score 四个关键指标。
+- `metrics.json` 改为输出更完整的模型评估结果。
+- 训练脚本、总流程脚本和测试脚本同步适配新指标字段。

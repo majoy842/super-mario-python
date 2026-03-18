@@ -21,7 +21,7 @@
 - `sentiment_system/src/visualize.py`
 
 检查 `sentiment_system/outputs/` 是否有：
-- metrics.json（包含多个方法的对比）
+- metrics.json（包含 Accuracy、Precision、Recall、F1-score 等模型对比指标）
 - analysis.json
 - predictions.csv
 - summary_bar.png

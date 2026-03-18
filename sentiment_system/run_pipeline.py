@@ -42,7 +42,11 @@ def main() -> None:
     visualize(metrics_path, analysis_path, output_dir)
 
     top = metrics['results'][0]
-    print(f"完成！最佳模型={metrics['best_model']}，macro_f1={top['macro_f1']:.4f}，正向占比={analysis['pred_positive_ratio']:.2%}")
+    print(
+        f"完成！最佳模型={metrics['best_model']}，accuracy={top['accuracy']:.4f}，"
+        f"precision={top['precision']:.4f}，recall={top['recall']:.4f}，"
+        f"f1_score={top['f1_score']:.4f}，正向占比={analysis['pred_positive_ratio']:.2%}"
+    )
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ python sentiment_system/tests/test_by_module.py
 
 ## 输出文件
 会生成在 `sentiment_system/outputs/`：
-- metrics.json（包含多模型对比结果和最佳模型）
+- metrics.json（包含 Accuracy、Precision、Recall、F1-score 和最佳模型）
 - analysis.json
 - predictions.csv
 - summary_bar.png
@@ -60,3 +60,12 @@ python sentiment_system/tests/test_by_module.py
 - positive_wordcloud.png
 
 版本更新日志见：`sentiment_system/CHANGELOG.md`
+
+
+## 模型评估指标
+- Accuracy（准确率）
+- Precision（精确率）
+- Recall（召回率）
+- F1-score（F1值）
+
+以上指标都会写入 `metrics.json`，并在训练完成与总流程完成时输出到控制台。

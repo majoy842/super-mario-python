@@ -31,6 +31,11 @@ def run_test() -> None:
     metrics = train_model(clean_path, model_path, metrics_path)
     assert "best_model" in metrics
     assert len(metrics.get("results", [])) >= 2
+    top = metrics["results"][0]
+    assert "accuracy" in top
+    assert "precision" in top
+    assert "recall" in top
+    assert "f1_score" in top
 
     result = run_analysis(clean_path, model_path, analysis_path)
     assert "pred_positive_ratio" in result

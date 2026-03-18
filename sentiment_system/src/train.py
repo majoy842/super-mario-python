@@ -10,7 +10,7 @@ import joblib
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression, SGDClassifier
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
@@ -54,9 +54,19 @@ def train_model(data_path: Path, model_path: Path, metrics_path: Path) -> dict:
         y_pred = model.predict(x_test)
 
         acc = float(accuracy_score(y_test, y_pred))
+        precision = float(precision_score(y_test, y_pred, average="macro", zero_division=0))
+        recall = float(recall_score(y_test, y_pred, average="macro", zero_division=0))
         f1 = float(f1_score(y_test, y_pred, average="macro"))
 
-        results.append({"model": name, "accuracy": acc, "macro_f1": f1})
+        results.append(
+            {
+                "model": name,
+                "accuracy": acc,
+                "precision": precision,
+                "recall": recall,
+                "f1_score": f1,
+            }
+        )
 
         if f1 > best_f1:
             best_f1 = f1
@@ -71,7 +81,7 @@ def train_model(data_path: Path, model_path: Path, metrics_path: Path) -> dict:
 
     metrics = {
         "best_model": best_name,
-        "results": sorted(results, key=lambda x: x["macro_f1"], reverse=True),
+        "results": sorted(results, key=lambda x: x["f1_score"], reverse=True),
     }
 
     with metrics_path.open("w", encoding="utf-8") as f:
@@ -89,7 +99,11 @@ def main() -> None:
 
     metrics = train_model(Path(args.data), Path(args.model), Path(args.metrics))
     top = metrics["results"][0]
-    print(f"训练完成，最佳模型：{metrics['best_model']}，macro_f1={top['macro_f1']:.4f}")
+    print(
+        f"训练完成，最佳模型：{metrics['best_model']}，"
+        f"accuracy={top['accuracy']:.4f}，precision={top['precision']:.4f}，"
+        f"recall={top['recall']:.4f}，f1_score={top['f1_score']:.4f}"
+    )
 
 
 if __name__ == "__main__":
