@@ -18,3 +18,7 @@
 - 预处理移除 `text,label` 兼容逻辑，只保留 `content,sentiment_value`。
 - 示例原始数据列名同步为 `content,sentiment_value`。
 - 文档同步更新为统一第二种数据格式。
+
+## v1.2.2
+- 默认原始数据路径切换为 `sentiment_system/data/raw/earphone_sentiment.csv`。
+- 运行脚本、预处理和测试脚本同步使用新数据集路径。

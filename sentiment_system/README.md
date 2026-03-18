@@ -29,6 +29,8 @@ pip install -r requirements.txt
 
 > 所有脚本都使用“基于文件位置”的路径，PyCharm 工作目录可任意。
 
+默认原始数据文件：`sentiment_system/data/raw/earphone_sentiment.csv`
+
 ## 运行方式
 ### 方式1：一键运行
 ```bash

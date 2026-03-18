@@ -11,6 +11,8 @@
 
 ---
 
+默认测试数据：`sentiment_system/data/raw/earphone_sentiment.csv`
+
 ## 1. 分模块测试
 在 PyCharm 中按顺序运行：
 - `sentiment_system/src/preprocess.py`

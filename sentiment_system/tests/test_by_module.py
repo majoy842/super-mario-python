@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 def run_test() -> None:
-    raw_path = BASE_DIR / "data/raw/reviews.csv"
+    raw_path = BASE_DIR / "data/raw/earphone_sentiment.csv"
     clean_path = BASE_DIR / "data/processed/reviews_clean.csv"
     model_path = BASE_DIR / "models/sentiment_model.joblib"
     metrics_path = BASE_DIR / "outputs/metrics.json"

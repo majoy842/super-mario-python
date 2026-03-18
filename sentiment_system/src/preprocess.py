@@ -50,7 +50,7 @@ def preprocess(input_path: Path, output_path: Path) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/reviews.csv"))
+    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/earphone_sentiment.csv"))
     parser.add_argument("--output", default=str(BASE_DIR / "data/processed/reviews_clean.csv"))
     args = parser.parse_args()
 

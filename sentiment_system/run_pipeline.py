@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/reviews.csv"))
+    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/earphone_sentiment.csv"))
     args = parser.parse_args()
 
     raw_path = Path(args.input)
