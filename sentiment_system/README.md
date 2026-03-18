@@ -70,3 +70,8 @@ python sentiment_system/tests/test_by_module.py
 - F1-score（F1值）
 
 以上指标都会写入 `metrics.json`，并在训练完成与总流程完成时输出到控制台。
+
+
+## 中文显示说明
+- 可视化模块已默认启用 `SimHei` 字体配置。
+- 词云默认使用 `C:/Windows/Fonts/simhei.ttf`，适合 Windows + PyCharm 环境显示中文。

@@ -32,3 +32,7 @@
 - 可视化新增 `training_curves.png`，包含 Loss 曲线和 Accuracy 曲线。
 - 训练阶段记录 SGD 模型每轮 loss/accuracy，用于更直观展示训练过程。
 - 测试脚本同步检查训练曲线图片是否生成。
+
+## v1.2.5
+- 继承可视化中文显示修复：Matplotlib 默认使用 `SimHei`，并关闭负号乱码。
+- 词云默认使用 `C:/Windows/Fonts/simhei.ttf`，改善 Windows / PyCharm 下中文词云显示。

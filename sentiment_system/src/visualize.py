@@ -14,6 +14,10 @@ from wordcloud import WordCloud
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
+# 继承用户补充：解决 matplotlib 中文和负号显示问题
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
 
 def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -70,7 +74,12 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
         plt.close()
 
     if pos:
-        wc = WordCloud(width=800, height=400, background_color="white")
+        wc = WordCloud(
+            width=800,
+            height=400,
+            background_color="white",
+            font_path="C:/Windows/Fonts/simhei.ttf"
+        )
         wc.generate_from_frequencies(pos)
         wc.to_file(str(out_dir / "positive_wordcloud.png"))
 
