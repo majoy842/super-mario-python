@@ -47,6 +47,19 @@ pip install -r requirements.txt
 
 ---
 
+
+## Python 3.11 兼容性说明
+
+本项目依赖已按 Python 3.11 兼容版本设置在 `requirements.txt` 中（如 `pandas>=2.0.3`、`scikit-learn>=1.3.2`、`matplotlib>=3.7.3`、`scipy>=1.10.0` 等）。
+
+建议在 PyCharm 中使用 Python 3.11 虚拟环境后执行：
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
 ## 在 PyCharm 中推荐的测试方式
 
 ### 方式 A：一键跑完整流程
