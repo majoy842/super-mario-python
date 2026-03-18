@@ -14,6 +14,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def train_model(data_path: Path, model_path: Path, metrics_path: Path) -> dict:
     """读取数据并训练模型，返回准确率。"""
@@ -45,9 +47,9 @@ def train_model(data_path: Path, model_path: Path, metrics_path: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="sentiment_system/data/processed/reviews_clean.csv")
-    parser.add_argument("--model", default="sentiment_system/models/sentiment_model.joblib")
-    parser.add_argument("--metrics", default="sentiment_system/outputs/metrics.json")
+    parser.add_argument("--data", default=str(BASE_DIR / "data/processed/reviews_clean.csv"))
+    parser.add_argument("--model", default=str(BASE_DIR / "models/sentiment_model.joblib"))
+    parser.add_argument("--metrics", default=str(BASE_DIR / "outputs/metrics.json"))
     args = parser.parse_args()
 
     metrics = train_model(Path(args.data), Path(args.model), Path(args.metrics))

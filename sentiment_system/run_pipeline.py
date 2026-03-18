@@ -10,7 +10,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# 兼容 PyCharm 直接运行脚本：把仓库根目录加到 sys.path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -21,15 +20,16 @@ from sentiment_system.src.train import train_model
 from sentiment_system.src.visualize import visualize
 
 
-def main() -> None:
-    base = Path("sentiment_system")
+BASE_DIR = Path(__file__).resolve().parent
 
-    raw_path = base / "data/raw/reviews.csv"
-    clean_path = base / "data/processed/reviews_clean.csv"
-    model_path = base / "models/sentiment_model.joblib"
-    metrics_path = base / "outputs/metrics.json"
-    analysis_path = base / "outputs/analysis.json"
-    output_dir = base / "outputs"
+
+def main() -> None:
+    raw_path = BASE_DIR / "data/raw/reviews.csv"
+    clean_path = BASE_DIR / "data/processed/reviews_clean.csv"
+    model_path = BASE_DIR / "models/sentiment_model.joblib"
+    metrics_path = BASE_DIR / "outputs/metrics.json"
+    analysis_path = BASE_DIR / "outputs/analysis.json"
+    output_dir = BASE_DIR / "outputs"
 
     preprocess(raw_path, clean_path)
     metrics = train_model(clean_path, model_path, metrics_path)

@@ -24,7 +24,7 @@ pip install -r requirements.txt
 4. 如果你想自动检查每一步，运行：
    - `sentiment_system/tests/test_by_module.py`
 
-> 现在 `run_pipeline.py` 已做路径兼容处理，PyCharm 直接运行也能找到模块。
+> 现在所有脚本都使用“基于文件位置”的路径，PyCharm 无论工作目录怎么设置都可以直接运行。
 
 ## 运行方式
 ### 方式1：一键运行
@@ -38,6 +38,8 @@ python sentiment_system/src/preprocess.py
 python sentiment_system/src/train.py
 python sentiment_system/src/analyze.py
 python sentiment_system/src/visualize.py
+
+# 也可以在 PyCharm 里直接右键这些文件运行
 ```
 
 ### 方式3：运行测试脚本

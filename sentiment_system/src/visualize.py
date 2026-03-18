@@ -12,6 +12,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     """生成 3 张图：摘要柱状图、关键词柱状图、正向词云。"""
@@ -22,7 +24,6 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     with analysis_path.open("r", encoding="utf-8") as f:
         analysis = json.load(f)
 
-    # 1) 摘要图
     plt.figure(figsize=(6, 4))
     plt.bar(["accuracy", "positive_ratio"], [metrics["accuracy"], analysis["pred_positive_ratio"]])
     plt.ylim(0, 1)
@@ -30,7 +31,6 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     plt.savefig(out_dir / "summary_bar.png", dpi=120)
     plt.close()
 
-    # 2) 关键词图
     pos = dict(analysis["top_positive_words"])
     neg = dict(analysis["top_negative_words"])
 
@@ -47,7 +47,6 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     plt.savefig(out_dir / "top_words.png", dpi=120)
     plt.close()
 
-    # 3) 正向词云（如果有词）
     if pos:
         wc = WordCloud(width=800, height=400, background_color="white")
         wc.generate_from_frequencies(pos)
@@ -56,9 +55,9 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--metrics", default="sentiment_system/outputs/metrics.json")
-    parser.add_argument("--analysis", default="sentiment_system/outputs/analysis.json")
-    parser.add_argument("--out", default="sentiment_system/outputs")
+    parser.add_argument("--metrics", default=str(BASE_DIR / "outputs/metrics.json"))
+    parser.add_argument("--analysis", default=str(BASE_DIR / "outputs/analysis.json"))
+    parser.add_argument("--out", default=str(BASE_DIR / "outputs"))
     args = parser.parse_args()
 
     visualize(Path(args.metrics), Path(args.analysis), Path(args.out))

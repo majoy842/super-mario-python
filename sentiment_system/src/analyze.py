@@ -11,6 +11,7 @@ import jieba
 import joblib
 import pandas as pd
 
+BASE_DIR = Path(__file__).resolve().parents[1]
 STOPWORDS = {"的", "了", "很", "也", "就", "都", "和", "太", "不"}
 
 
@@ -59,9 +60,9 @@ def run_analysis(data_path: Path, model_path: Path, output_path: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="sentiment_system/data/processed/reviews_clean.csv")
-    parser.add_argument("--model", default="sentiment_system/models/sentiment_model.joblib")
-    parser.add_argument("--output", default="sentiment_system/outputs/analysis.json")
+    parser.add_argument("--data", default=str(BASE_DIR / "data/processed/reviews_clean.csv"))
+    parser.add_argument("--model", default=str(BASE_DIR / "models/sentiment_model.joblib"))
+    parser.add_argument("--output", default=str(BASE_DIR / "outputs/analysis.json"))
     args = parser.parse_args()
 
     result = run_analysis(Path(args.data), Path(args.model), Path(args.output))

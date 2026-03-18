@@ -8,6 +8,8 @@ from pathlib import Path
 
 import pandas as pd
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def clean_text(text: str) -> str:
     """简单清洗：转小写、去特殊符号、去多余空格。"""
@@ -36,8 +38,8 @@ def preprocess(input_path: Path, output_path: Path) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="sentiment_system/data/raw/reviews.csv")
-    parser.add_argument("--output", default="sentiment_system/data/processed/reviews_clean.csv")
+    parser.add_argument("--input", default=str(BASE_DIR / "data/raw/reviews.csv"))
+    parser.add_argument("--output", default=str(BASE_DIR / "data/processed/reviews_clean.csv"))
     args = parser.parse_args()
 
     result = preprocess(Path(args.input), Path(args.output))

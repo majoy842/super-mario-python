@@ -14,16 +14,16 @@ from sentiment_system.src.preprocess import preprocess
 from sentiment_system.src.train import train_model
 from sentiment_system.src.visualize import visualize
 
-BASE = Path("sentiment_system")
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 def run_test() -> None:
-    raw_path = BASE / "data/raw/reviews.csv"
-    clean_path = BASE / "data/processed/reviews_clean.csv"
-    model_path = BASE / "models/sentiment_model.joblib"
-    metrics_path = BASE / "outputs/metrics.json"
-    analysis_path = BASE / "outputs/analysis.json"
-    out_dir = BASE / "outputs"
+    raw_path = BASE_DIR / "data/raw/reviews.csv"
+    clean_path = BASE_DIR / "data/processed/reviews_clean.csv"
+    model_path = BASE_DIR / "models/sentiment_model.joblib"
+    metrics_path = BASE_DIR / "outputs/metrics.json"
+    analysis_path = BASE_DIR / "outputs/analysis.json"
+    out_dir = BASE_DIR / "outputs"
 
     df = preprocess(raw_path, clean_path)
     assert len(df) > 0

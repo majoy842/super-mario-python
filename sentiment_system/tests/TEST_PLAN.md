@@ -7,7 +7,7 @@
 ## 0. PyCharm 配置
 1. 打开仓库根目录 `super-mario-python`
 2. 设置解释器为 Python 3.11
-3. Working directory 建议设为项目根目录
+3. Working directory 任意（脚本内部已做绝对路径定位）
 
 ---
 
