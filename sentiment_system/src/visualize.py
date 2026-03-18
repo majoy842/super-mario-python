@@ -48,6 +48,27 @@ def visualize(metrics_path: Path, analysis_path: Path, out_dir: Path) -> None:
     plt.savefig(out_dir / "top_words.png", dpi=120)
     plt.close()
 
+    history = metrics.get("training_history")
+    if history:
+        plt.figure(figsize=(10, 4))
+
+        plt.subplot(1, 2, 1)
+        plt.plot(history["epochs"], history["loss"], marker="o")
+        plt.title("Loss Curve")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+
+        plt.subplot(1, 2, 2)
+        plt.plot(history["epochs"], history["accuracy"], marker="o")
+        plt.title("Accuracy Curve")
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy")
+        plt.ylim(0, 1)
+
+        plt.tight_layout()
+        plt.savefig(out_dir / "training_curves.png", dpi=120)
+        plt.close()
+
     if pos:
         wc = WordCloud(width=800, height=400, background_color="white")
         wc.generate_from_frequencies(pos)

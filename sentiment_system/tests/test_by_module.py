@@ -42,6 +42,7 @@ def run_test() -> None:
 
     visualize(metrics_path, analysis_path, out_dir)
     assert (out_dir / "summary_bar.png").exists()
+    assert (out_dir / "training_curves.png").exists()
 
     print("测试通过")
 

@@ -27,3 +27,8 @@
 - 训练结果新增 Accuracy、Precision、Recall、F1-score 四个关键指标。
 - `metrics.json` 改为输出更完整的模型评估结果。
 - 训练脚本、总流程脚本和测试脚本同步适配新指标字段。
+
+## v1.2.4
+- 可视化新增 `training_curves.png`，包含 Loss 曲线和 Accuracy 曲线。
+- 训练阶段记录 SGD 模型每轮 loss/accuracy，用于更直观展示训练过程。
+- 测试脚本同步检查训练曲线图片是否生成。

@@ -6,7 +6,7 @@
 1. 数据预处理（统一使用 content,sentiment_value）
 2. 多模型训练与对比（LR / NB / SGD）
 3. 情感分析（支持标签 -1/0/1）
-4. 可视化（柱状图 + 词云）
+4. 可视化（柱状图 + 词云 + Loss/Accuracy 曲线）
 
 ## 数据格式要求
 必须使用以下列名：
@@ -57,6 +57,7 @@ python sentiment_system/tests/test_by_module.py
 - predictions.csv
 - summary_bar.png
 - top_words.png
+- training_curves.png（Loss 曲线 + Accuracy 曲线）
 - positive_wordcloud.png
 
 版本更新日志见：`sentiment_system/CHANGELOG.md`

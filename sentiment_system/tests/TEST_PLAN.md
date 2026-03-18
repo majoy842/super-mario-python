@@ -26,6 +26,7 @@
 - predictions.csv
 - summary_bar.png
 - top_words.png
+- training_curves.png（Loss 曲线与 Accuracy 曲线）
 
 ## 2. 自动分步测试
 ```bash
