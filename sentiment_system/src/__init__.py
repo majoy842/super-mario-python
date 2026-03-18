@@ -1,3 +1,1 @@
-from .pipeline import SentimentAnalysisSystem, SentimentSystemConfig
-
-__all__ = ["SentimentAnalysisSystem", "SentimentSystemConfig"]
+"""情感分析系统核心模块。"""

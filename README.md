@@ -35,7 +35,7 @@ The code needs still alot of refactoring as it is right now, so I appreciate any
 
 ## Sentiment Analysis Module
 
-A full sentiment analysis pipeline is available in `sentiment_system/`, including preprocessing, model training, mining, visualization, and an encapsulated reusable system class + CLI.
+A full sentiment analysis pipeline is available in `sentiment_system/`, including preprocessing, model training, mining, and visualization, and it is optimized for step-by-step testing in PyCharm (Python 3.11).
 
 ```bash
 python sentiment_system/run_pipeline.py

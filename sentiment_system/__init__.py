@@ -1,3 +1,1 @@
-from .src import SentimentAnalysisSystem, SentimentSystemConfig
-
-__all__ = ["SentimentAnalysisSystem", "SentimentSystemConfig"]
+"""情感分析系统包（Python 3.11）。"""
