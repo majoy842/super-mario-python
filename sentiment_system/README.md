@@ -13,6 +13,19 @@
 pip install -r requirements.txt
 ```
 
+## PyCharm 测试（推荐）
+你可以直接在 PyCharm 中测试：
+
+1. 打开项目根目录 `super-mario-python`
+2. 解释器选择 Python 3.11 虚拟环境
+3. 直接右键运行：
+   - `sentiment_system/run_pipeline.py`（一键全流程）
+   - 或者逐个运行 `sentiment_system/src/` 下的 4 个模块
+4. 如果你想自动检查每一步，运行：
+   - `sentiment_system/tests/test_by_module.py`
+
+> 现在 `run_pipeline.py` 已做路径兼容处理，PyCharm 直接运行也能找到模块。
+
 ## 运行方式
 ### 方式1：一键运行
 ```bash
