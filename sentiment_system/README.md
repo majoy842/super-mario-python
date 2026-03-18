@@ -1,75 +1,25 @@
-# 情感分析系统（Sentiment Analysis System）
+# 情感分析系统（简化版）
 
-> 面向 **Python 3.11**，适合在 **PyCharm** 里按模块调试与测试。
+这是一个适合本科生学习的简单情感分析小项目，支持 Python 3.11。
 
-该模块提供完整流程：
-
+## 功能
 1. 数据预处理
 2. 模型训练（TF-IDF + 逻辑回归）
-3. 分析挖掘（情感占比、关键词统计）
-4. 可视化（柱状图、关键词图、词云）
+3. 情感分析（预测标签和关键词统计）
+4. 可视化（柱状图 + 词云）
 
----
-
-## 目录结构
-
-```text
-sentiment_system/
-├── data/
-│   ├── raw/reviews.csv
-│   └── processed/reviews_clean.csv
-├── models/sentiment_model.joblib
-├── outputs/
-│   ├── metrics.json
-│   ├── analysis.json
-│   ├── predictions.csv
-│   ├── summary_bar.png
-│   ├── top_words.png
-│   └── positive_wordcloud.png
-├── src/
-│   ├── preprocess.py
-│   ├── train.py
-│   ├── analyze.py
-│   └── visualize.py
-├── tests/
-│   ├── test_by_module.py
-│   └── TEST_PLAN.md
-└── run_pipeline.py
-```
-
----
-
-## 安装依赖
-
+## 安装
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-
-## Python 3.11 兼容性说明
-
-本项目依赖已按 Python 3.11 兼容版本设置在 `requirements.txt` 中（如 `pandas>=2.0.3`、`scikit-learn>=1.3.2`、`matplotlib>=3.7.3`、`scipy>=1.10.0` 等）。
-
-建议在 PyCharm 中使用 Python 3.11 虚拟环境后执行：
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 在 PyCharm 中推荐的测试方式
-
-### 方式 A：一键跑完整流程
-
+## 运行方式
+### 方式1：一键运行
 ```bash
 python sentiment_system/run_pipeline.py
 ```
 
-### 方式 B：按模块分块测试（推荐）
-
+### 方式2：分步骤运行
 ```bash
 python sentiment_system/src/preprocess.py
 python sentiment_system/src/train.py
@@ -77,38 +27,23 @@ python sentiment_system/src/analyze.py
 python sentiment_system/src/visualize.py
 ```
 
-### 方式 C：运行分模块测试脚本
-
+### 方式3：运行测试脚本
 ```bash
 python sentiment_system/tests/test_by_module.py
 ```
 
----
-
 ## 输入数据格式
+CSV 两列：
+- text：评论文本
+- label：0 或 1
 
-CSV 至少包含两列：
+## 输出文件
+会生成在 `sentiment_system/outputs/`：
+- metrics.json
+- analysis.json
+- predictions.csv
+- summary_bar.png
+- top_words.png
+- positive_wordcloud.png
 
-- `text`: 评论文本
-- `label`: 标签（1=正向，0=负向）
-
----
-
-## 输出说明
-
-- `metrics.json`: 模型准确率和分类指标
-- `analysis.json`: 正向占比及高频词统计
-- `predictions.csv`: 每条样本的预测标签与概率
-- `summary_bar.png`: 准确率与正向占比可视化
-- `top_words.png`: 正负面高频词可视化
-- `positive_wordcloud.png`: 正面词云
-
----
-
-## 完整测试方案
-
-请查看：
-
-- `sentiment_system/tests/TEST_PLAN.md`
-
-其中包含：分模块测试、全流程回归、异常与边界测试、PyCharm 调试建议。
+更多测试说明见：`sentiment_system/tests/TEST_PLAN.md`
