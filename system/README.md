@@ -47,3 +47,8 @@ python -m system.main \
   --sentiment-word-column sentiment_word \
   --output-dir system/outputs
 ```
+
+
+## 实验推进说明
+
+- 详细实验步骤与推荐顺序见 `EXPERIMENT_GUIDE.md`。

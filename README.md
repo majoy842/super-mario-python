@@ -41,3 +41,5 @@ The code needs still alot of refactoring as it is right now, so I appreciate any
 * Runtime code: `system/`
 * Design document: `docs/sentiment-system-design.md`
 * Version log: `system/VERSION_LOG.md`
+
+* Experiment guide: `system/EXPERIMENT_GUIDE.md`
