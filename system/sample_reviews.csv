@@ -1,0 +1,13 @@
+review_id,review_text,aspect,sentiment_label,sentiment_words
+1,这款耳机音质很好低音很足,音质,positive,很好;很足
+2,价格有点贵但是做工不错,价格,neutral,贵;不错
+3,佩戴时间久了耳朵疼不太舒服,舒适度,negative,疼;不舒服
+4,蓝牙连接很稳定功能齐全,功能,positive,稳定;齐全
+5,外观设计很漂亮颜值高,外观,positive,漂亮;高
+6,续航太差充一次电用不了多久,续航,negative,太差
+7,降噪效果一般地铁里还是有杂音,降噪,negative,一般;杂音
+8,整体体验不错性价比很高,价格,positive,不错;高
+9,耳机重量轻佩戴舒适,舒适度,positive,舒适
+10,麦克风效果差通话听不清,功能,negative,差;听不清
+11,音质普通没有宣传的那么好,音质,neutral,普通
+12,包装精致外观看起来很高级,外观,positive,精致;高级
