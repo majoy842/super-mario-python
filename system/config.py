@@ -8,11 +8,11 @@ from typing import Dict, List
 @dataclass
 class DataConfig:
     data_path: Path
-    text_column: str = "review_text"
-    label_column: str = "sentiment_label"
-    aspect_column: str = "aspect"
-    sentiment_word_column: str = "sentiment_words"
-    id_column: str = "review_id"
+    id_column: str = "content_id"
+    text_column: str = "content"
+    aspect_column: str = "subject"
+    sentiment_word_column: str = "sentiment_word"
+    label_column: str = "sentiment_value"
     encoding: str = "utf-8-sig"
 
 
@@ -24,6 +24,11 @@ class PreprocessConfig:
     stopwords_path: Path | None = None
     custom_dict_path: Path | None = None
     min_token_length: int = 1
+    min_text_length: int = 4
+    max_text_length: int = 512
+    drop_symbol_only: bool = True
+    drop_meaningless_english: bool = True
+    noise_phrases: List[str] = field(default_factory=lambda: ["帮顶", "同问", "围观", "马克", "mark"])
 
 
 @dataclass
@@ -39,23 +44,27 @@ class TrainingConfig:
 
 @dataclass
 class AnalysisConfig:
-    negative_labels: List[str] = field(default_factory=lambda: ["negative", "负面", "neg", "-1"])
+    negative_labels: List[str] = field(default_factory=lambda: ["negative", "负面", "neg", "-1", -1])
+    neutral_labels: List[str] = field(default_factory=lambda: ["neutral", "中性", "0", 0])
+    positive_labels: List[str] = field(default_factory=lambda: ["positive", "正面", "1", 1])
     supported_aspects: List[str] = field(
-        default_factory=lambda: ["价格", "音质", "功能", "舒适度", "外观", "续航", "降噪"]
+        default_factory=lambda: ["音质", "配置", "价格", "舒适", "功能", "外形", "其他"]
     )
+    focus_aspects: List[str] = field(default_factory=lambda: ["音质", "配置", "价格", "舒适", "功能", "外形"])
     aspect_keywords: Dict[str, List[str]] = field(
         default_factory=lambda: {
             "价格": ["价格", "便宜", "贵", "性价比"],
             "音质": ["音质", "声音", "低音", "高音", "解析"],
-            "功能": ["功能", "连接", "蓝牙", "操作", "降噪"],
-            "舒适度": ["舒适", "佩戴", "耳罩", "压耳", "重量"],
-            "外观": ["外观", "颜值", "设计", "做工", "颜色"],
-            "续航": ["续航", "电量", "充电", "待机"],
-            "降噪": ["降噪", "噪音", "环境音", "隔音"],
+            "功能": ["功能", "连接", "蓝牙", "操作", "通话"],
+            "舒适": ["舒适", "佩戴", "耳罩", "压耳", "重量"],
+            "外形": ["外形", "外观", "颜值", "设计", "做工", "颜色"],
+            "配置": ["配置", "参数", "单元", "芯片", "规格"],
+            "其他": [],
         }
     )
     pain_point_top_k: int = 15
     cluster_count: int = 3
+    include_other_in_focus_analysis: bool = False
 
 
 @dataclass

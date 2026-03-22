@@ -9,6 +9,8 @@ class DatasetSummary:
     rows: int
     columns: list[str]
     label_distribution: dict
+    aspect_distribution: dict
+    duplicate_count: int
 
 
 class DatasetLoader:
@@ -34,8 +36,20 @@ class DatasetLoader:
         return pd.read_json(self.data_path)
 
     @staticmethod
-    def summarize(df, label_column: str) -> DatasetSummary:
-        distribution = {}
+    def summarize(df, text_column: str, label_column: str, aspect_column: str) -> DatasetSummary:
+        label_distribution = {}
+        aspect_distribution = {}
         if label_column in df.columns:
-            distribution = df[label_column].value_counts(dropna=False).to_dict()
-        return DatasetSummary(rows=len(df), columns=df.columns.tolist(), label_distribution=distribution)
+            label_distribution = df[label_column].value_counts(dropna=False).to_dict()
+        if aspect_column in df.columns:
+            aspect_distribution = df[aspect_column].fillna("其他").astype(str).value_counts(dropna=False).to_dict()
+        duplicate_count = 0
+        if text_column in df.columns:
+            duplicate_count = int(df.duplicated(subset=[text_column]).sum())
+        return DatasetSummary(
+            rows=len(df),
+            columns=df.columns.tolist(),
+            label_distribution=label_distribution,
+            aspect_distribution=aspect_distribution,
+            duplicate_count=duplicate_count,
+        )

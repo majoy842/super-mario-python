@@ -1,6 +1,27 @@
 # 情感分析系统代码说明
 
-该目录按照“数据导入 → 文本预处理 → 情感分类 → 模型对比 → 细粒度分析 → 痛点挖掘 → 结果展示与导出”的设计思路组织实现。
+该目录按照“数据导入 → 文本预处理 → 情感分类 → 模型对比 → 细粒度分析 → 痛点挖掘 → 结果展示与导出”的设计思路组织实现，并已针对你的真实数据字段做了默认适配。
+
+## 默认字段映射
+
+- `content_id`：评论编号
+- `content`：评论文本
+- `subject`：属性维度
+- `sentiment_word`：情感词（用于解释和展示，不建议直接作为主模型特征）
+- `sentiment_value`：情感标签（`-1 / 0 / 1`）
+
+## 当前预处理策略
+
+系统默认执行以下严格预处理：
+
+- 按 `content` 去重；
+- 删除纯符号评论；
+- 删除长度过短评论；
+- 截断超长评论；
+- 清理异常空格与特殊字符；
+- 过滤典型噪声短语，例如“帮顶”“同问”“围观”“马克”；
+- 将 `sentiment_value` 统一映射为 `negative / neutral / positive`；
+- 保留 `subject` 用于细粒度统计，并将“其他”从重点维度分析中单独区分。
 
 ## 目录结构
 
@@ -19,17 +40,10 @@
 ```bash
 python -m system.main \
   --data path/to/reviews.csv \
-  --text-column review_text \
-  --label-column sentiment_label \
-  --aspect-column aspect \
+  --id-column content_id \
+  --text-column content \
+  --label-column sentiment_value \
+  --aspect-column subject \
+  --sentiment-word-column sentiment_word \
   --output-dir system/outputs
 ```
-
-## 数据字段建议
-
-建议输入数据至少包含以下字段：
-
-- `review_text`：评论文本
-- `sentiment_label`：情感标签（正面 / 负面 / 中性）
-- `aspect`：属性标签（价格 / 音质 / 功能 / 舒适度 / 外观 等）
-- `sentiment_words`：情感词（可选）

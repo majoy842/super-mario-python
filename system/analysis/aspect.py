@@ -2,8 +2,15 @@ from __future__ import annotations
 
 
 class FineGrainedAnalyzer:
-    def __init__(self, aspect_keywords: dict[str, list[str]]) -> None:
+    def __init__(
+        self,
+        aspect_keywords: dict[str, list[str]],
+        focus_aspects: list[str] | None = None,
+        include_other_in_focus_analysis: bool = False,
+    ) -> None:
         self.aspect_keywords = aspect_keywords
+        self.focus_aspects = focus_aspects or []
+        self.include_other_in_focus_analysis = include_other_in_focus_analysis
 
     def infer_aspect(self, text: str) -> str:
         for aspect, keywords in self.aspect_keywords.items():
@@ -25,4 +32,14 @@ class FineGrainedAnalyzer:
             .reset_index()
             .sort_values("aspect_detected")
         )
-        return working_df, distribution, summary
+        focus_df = working_df.copy()
+        if self.focus_aspects:
+            focus_df = focus_df[focus_df["aspect_detected"].isin(self.focus_aspects)].copy()
+        if self.include_other_in_focus_analysis:
+            focus_df = working_df.copy()
+        focus_distribution = (
+            focus_df.groupby(["aspect_detected", label_column]).size().reset_index(name="count").sort_values("count", ascending=False)
+            if not focus_df.empty
+            else distribution.iloc[0:0].copy()
+        )
+        return working_df, distribution, summary, focus_distribution

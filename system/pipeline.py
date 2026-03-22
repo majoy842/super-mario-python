@@ -24,9 +24,18 @@ class SentimentAnalysisSystem:
             lowercase=config.preprocess.lowercase,
             remove_digits=config.preprocess.remove_digits,
             min_token_length=config.preprocess.min_token_length,
+            min_text_length=config.preprocess.min_text_length,
+            max_text_length=config.preprocess.max_text_length,
+            drop_symbol_only=config.preprocess.drop_symbol_only,
+            drop_meaningless_english=config.preprocess.drop_meaningless_english,
+            noise_phrases=config.preprocess.noise_phrases,
         )
         self.evaluator = ModelEvaluator()
-        self.aspect_analyzer = FineGrainedAnalyzer(config.analysis.aspect_keywords)
+        self.aspect_analyzer = FineGrainedAnalyzer(
+            config.analysis.aspect_keywords,
+            focus_aspects=config.analysis.focus_aspects,
+            include_other_in_focus_analysis=config.analysis.include_other_in_focus_analysis,
+        )
         self.pain_point_miner = PainPointMiner(
             negative_labels=config.analysis.negative_labels,
             top_k=config.analysis.pain_point_top_k,
@@ -42,10 +51,17 @@ class SentimentAnalysisSystem:
 
     def load_and_preprocess(self):
         df = self.dataset_loader.load()
-        summary = self.dataset_loader.summarize(df, self.config.data.label_column)
+        summary = self.dataset_loader.summarize(
+            df,
+            text_column=self.config.data.text_column,
+            label_column=self.config.data.label_column,
+            aspect_column=self.config.data.aspect_column,
+        )
         processed_df = self.preprocessor.transform_dataframe(
             df,
             text_column=self.config.data.text_column,
+            label_column=self.config.data.label_column,
+            aspect_column=self.config.data.aspect_column,
             remove_duplicates=self.config.preprocess.remove_duplicates,
         )
         return df, processed_df, summary
@@ -72,9 +88,10 @@ class SentimentAnalysisSystem:
                 {
                     "model": model_name,
                     "accuracy": metrics["accuracy"],
-                    "precision": metrics["precision"],
-                    "recall": metrics["recall"],
-                    "f1": metrics["f1"],
+                    "macro_f1": metrics["macro_f1"],
+                    "macro_recall": metrics["macro_recall"],
+                    "weighted_f1": metrics["weighted_f1"],
+                    "negative_recall": metrics["negative_recall"],
                 }
             )
             prediction_frame = test_df.copy()
@@ -83,7 +100,9 @@ class SentimentAnalysisSystem:
             prediction_frames[model_name] = prediction_frame
             self.exporter.to_json(metrics, f"{model_name.lower()}_metrics.json")
 
-        comparison_df = pd.DataFrame(comparison_rows).sort_values("f1", ascending=False).reset_index(drop=True)
+        comparison_df = pd.DataFrame(comparison_rows).sort_values(
+            ["macro_f1", "negative_recall", "accuracy"], ascending=False
+        ).reset_index(drop=True)
         self.exporter.to_csv(comparison_df, "model_comparison.csv")
         self.visualizer.plot_model_comparison(comparison_df)
         return comparison_df, prediction_frames
@@ -111,7 +130,7 @@ class SentimentAnalysisSystem:
         return result_df
 
     def run_fine_grained_analysis(self, prediction_df):
-        analyzed_df, distribution_df, summary_df = self.aspect_analyzer.analyze(
+        analyzed_df, distribution_df, summary_df, focus_distribution_df = self.aspect_analyzer.analyze(
             prediction_df,
             text_column=self.config.data.text_column,
             label_column="predicted_label",
@@ -119,8 +138,9 @@ class SentimentAnalysisSystem:
         )
         self.exporter.to_csv(distribution_df, "aspect_distribution.csv")
         self.exporter.to_csv(summary_df, "aspect_summary.csv")
+        self.exporter.to_csv(focus_distribution_df, "focus_aspect_distribution.csv")
         self.visualizer.plot_aspect_distribution(distribution_df)
-        return analyzed_df, distribution_df, summary_df
+        return analyzed_df, distribution_df, summary_df, focus_distribution_df
 
     def run_pain_point_mining(self, prediction_df):
         negative_df, high_freq_terms, cluster_summary = self.pain_point_miner.mine(
@@ -141,11 +161,18 @@ class SentimentAnalysisSystem:
         comparison_df, _ = self.train_and_compare(processed_df)
         best_model = comparison_df.iloc[0]["model"]
         batch_results = self.batch_analyze(processed_df, model_name=best_model)
-        _, aspect_distribution, aspect_summary = self.run_fine_grained_analysis(batch_results)
+        _, aspect_distribution, aspect_summary, focus_aspect_distribution = self.run_fine_grained_analysis(batch_results)
         negative_df, high_freq_terms, cluster_summary = self.run_pain_point_mining(batch_results)
         self.exporter.to_json(
             {
                 "dataset_summary": asdict(dataset_summary),
+                "preprocess_rules": {
+                    "min_text_length": self.config.preprocess.min_text_length,
+                    "max_text_length": self.config.preprocess.max_text_length,
+                    "drop_symbol_only": self.config.preprocess.drop_symbol_only,
+                    "drop_meaningless_english": self.config.preprocess.drop_meaningless_english,
+                    "noise_phrases": self.config.preprocess.noise_phrases,
+                },
                 "best_model": best_model,
                 "negative_comment_count": int(len(negative_df)),
                 "high_frequency_terms": high_freq_terms,
@@ -159,6 +186,7 @@ class SentimentAnalysisSystem:
             "best_model": best_model,
             "comparison": comparison_df.to_dict(orient="records"),
             "aspect_distribution_rows": len(aspect_distribution),
+            "focus_aspect_distribution_rows": len(focus_aspect_distribution),
             "aspect_summary_rows": len(aspect_summary),
             "negative_comment_count": len(negative_df),
             "output_dir": str(Path(self.config.export.output_dir).resolve()),
