@@ -1,5 +1,22 @@
 # 系统版本日志
 
+## v1.5.0
+
+### 上个版本信息
+- v1.4.0 已经加入中文字体自动检测，但修复方式主要依赖 matplotlib 全局 `rcParams`。
+- 从用户反馈的图片看，图表标题等文本仍然可能显示为方框，说明仅设置全局字体还不足以覆盖 seaborn / matplotlib 中所有文本对象。
+
+### 本次更新内容
+- 继续修复中文可视化：在 `system/visualization.py` 中增加 `FontProperties` 级别的逐项应用逻辑，对标题、坐标轴标题、刻度标签、图例文本分别设置中文字体。
+- 扩展字体候选文件，增加 `msyh.ttc`、`msyhbd.ttc`、`simsun.ttc` 等 Windows 常见中文字体路径，提高在 Windows 环境中的命中率。
+- 保存图片时统一使用 `bbox_inches="tight"`，避免字体替换后标题或标签被裁切。
+- 更新 `system/README.md`，说明现在不仅是全局字体配置，还会逐项给图表文本应用字体。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：重构中文字体应用逻辑，改为“全局字体 + FontProperties 逐项应用”双保险方案。
+- `system/README.md`：补充更详细的中文字体说明。
+- `system/VERSION_LOG.md`：新增 v1.5.0 版本记录。
+
 ## v1.4.0
 
 ### 上个版本信息
