@@ -76,3 +76,8 @@ python -m system.main \
 
 - 系统现在生成词云时会复用和图表相同的中文字体解析逻辑。
 - 如果词云中的中文仍然显示异常，请优先将 `msyh.ttc`、`SimHei.ttf` 或 `simsun.ttc` 放入 `system/assets/fonts/`。
+
+
+## 第4章落位清单
+
+- 可直接用于论文排版的图表落位清单见 `THESIS_CHECKLIST.md`。
