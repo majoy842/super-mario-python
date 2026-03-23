@@ -70,3 +70,9 @@ python -m system.main \
 ## 论文写作对照说明
 
 - 输出文件与论文第 4 章各节的对应关系见 `THESIS_OUTPUT_GUIDE.md`。
+
+
+## 词云中文字体说明
+
+- 系统现在生成词云时会复用和图表相同的中文字体解析逻辑。
+- 如果词云中的中文仍然显示异常，请优先将 `msyh.ttc`、`SimHei.ttf` 或 `simsun.ttc` 放入 `system/assets/fonts/`。

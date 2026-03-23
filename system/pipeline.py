@@ -156,14 +156,16 @@ class SentimentAnalysisSystem:
         )
         if len(candidate_df) > 0:
             self.exporter.to_csv(candidate_df, "pain_point_candidates.csv")
+        wordcloud_path = self.visualizer.plot_wordcloud(dict(high_freq_terms), "pain_point_wordcloud.png")
         self.exporter.to_json(
             {
                 "high_frequency_terms": high_freq_terms,
                 "aspect_cluster_summary": cluster_summary,
+                "wordcloud_path": str(wordcloud_path) if wordcloud_path else None,
             },
             "pain_point_summary.json",
         )
-        return candidate_df, high_freq_terms, cluster_summary
+        return candidate_df, high_freq_terms, cluster_summary, wordcloud_path
 
     def run(self):
         raw_df, processed_df, dataset_summary = self.load_and_preprocess()
@@ -171,7 +173,7 @@ class SentimentAnalysisSystem:
         best_model = comparison_df.iloc[0]["model"]
         batch_results = self.batch_analyze(processed_df, model_name=best_model)
         _, aspect_distribution, aspect_summary, focus_aspect_distribution = self.run_fine_grained_analysis(batch_results)
-        pain_point_df, high_freq_terms, cluster_summary = self.run_pain_point_mining(batch_results)
+        pain_point_df, high_freq_terms, cluster_summary, wordcloud_path = self.run_pain_point_mining(batch_results)
         self.exporter.to_json(
             {
                 "dataset_summary": asdict(dataset_summary),
@@ -191,6 +193,7 @@ class SentimentAnalysisSystem:
                 "pain_point_candidate_count": int(len(pain_point_df)),
                 "high_frequency_terms": high_freq_terms,
                 "cluster_summary": cluster_summary,
+                "wordcloud_path": str(wordcloud_path) if wordcloud_path else None,
             },
             "run_summary.json",
         )

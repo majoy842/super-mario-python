@@ -1,5 +1,26 @@
 # 系统版本日志
 
+## v1.7.0
+
+### 上个版本信息
+- v1.6.0 已补充论文输出与文件对应关系说明，但词云可视化仍未真正纳入系统自动输出链路。
+- 用户补充指出：词云默认同样会遇到中文字体缺失问题，因此不仅图表文字，词云中的中文显示也需要同步解决。
+
+### 本次更新内容
+- 在 `system/visualization.py` 中新增词云导出方法，并复用统一的中文字体解析逻辑。
+- 在 `system/pipeline.py` 中接入词云生成流程，自动输出 `pain_point_wordcloud.png`，并把对应路径写入 `pain_point_summary.json` 与 `run_summary.json`。
+- 更新 `system/THESIS_OUTPUT_GUIDE.md`，明确图4-7 现在可以直接对应系统导出的词云图。
+- 更新 `system/README.md`，补充词云中文字体说明。
+- 更新 `requirements.txt`，加入 `wordcloud` 依赖。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：新增词云导出逻辑，并复用中文字体解析。
+- `system/pipeline.py`：接入自动词云生成与路径写出。
+- `system/THESIS_OUTPUT_GUIDE.md`：更新图4-7 与词云输出文件的对应关系。
+- `system/README.md`：新增词云中文字体说明。
+- `requirements.txt`：新增 `wordcloud` 依赖。
+- `system/VERSION_LOG.md`：新增 v1.7.0 版本记录。
+
 ## v1.6.0
 
 ### 上个版本信息

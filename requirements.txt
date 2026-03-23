@@ -6,3 +6,4 @@ jieba
 matplotlib
 seaborn
 openpyxl
+wordcloud

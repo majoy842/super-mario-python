@@ -42,6 +42,7 @@ python -m system.main --data system/data/reviews.csv --output-dir system/outputs
 
 - `pain_point_candidates.csv`
 - `pain_point_summary.json`
+- `pain_point_wordcloud.png`
 
 ### 5. 可视化图片类
 
@@ -284,6 +285,7 @@ python -m system.main --data system/data/reviews.csv --output-dir system/outputs
 
 - `pain_point_candidates.csv`
 - `pain_point_summary.json`
+- `pain_point_wordcloud.png`
 
 ### 每个文件如何理解
 
@@ -336,21 +338,12 @@ python -m system.main --data system/data/reviews.csv --output-dir system/outputs
 
 这一点很关键：
 
-**你现在系统还没有自动导出词云图片文件。**
+系统现在已经支持自动导出词云图片文件：`pain_point_wordcloud.png`。
 
-也就是说：
+因此这一节中：
 
-- 高频词统计已经有了；
-- 对应来源是 `pain_point_summary.json`；
-- 但词云图文件本身当前系统没有自动生成。
-
-所以你现在有两种写法：
-
-#### 方案A：保持原目录结构，但把图4-7改成“负面评论高频词统计图”
-你可以用 `pain_point_summary.json` 里的高频词，自己手工画柱状图或词云图。
-
-#### 方案B：保留“词云图”说法，但在后续补一个词云生成脚本
-如果你后面需要，我可以再单独给你补，不必动主系统。
+- **图4-7 负面评论高频词词云图** 可以直接对应 `pain_point_wordcloud.png`；
+- 高频词原始数据来源仍然是 `pain_point_summary.json`。
 
 ---
 
@@ -388,6 +381,7 @@ python -m system.main --data system/data/reviews.csv --output-dir system/outputs
 对应：
 - `pain_point_candidates.csv`
 - `pain_point_summary.json`
+- `pain_point_wordcloud.png`
 
 ### “图4-8 系统主要功能流程图”
 这个也建议你自己画，不是现成输出图片。
@@ -455,7 +449,7 @@ python -m system.main --data system/data/reviews.csv --output-dir system/outputs
 - 图4-3 TextCNN网络结构图
 - 图4-4 BERT情感分类实现流程图
 - 图4-6 负面评论聚类结果图（当前只有 JSON 摘要，没有自动聚类图）
-- 图4-7 负面评论高频词词云图（当前系统未自动输出词云图）
+- 图4-7 负面评论高频词词云图（现已可由系统自动输出 `pain_point_wordcloud.png`）
 - 图4-8 系统主要功能流程图
 - 图4-9 系统主界面图（当前无界面）
 

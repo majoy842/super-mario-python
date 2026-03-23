@@ -137,3 +137,34 @@ class ResultVisualizer:
         fig.savefig(path, dpi=self.dpi, bbox_inches="tight")
         plt.close(fig)
         return path
+
+    def plot_wordcloud(self, term_frequencies: dict[str, int], filename: str = "pain_point_wordcloud.png") -> Path | None:
+        import importlib.util
+
+        if not term_frequencies:
+            return None
+        if importlib.util.find_spec("wordcloud") is None or importlib.util.find_spec("matplotlib") is None:
+            return None
+
+        from wordcloud import WordCloud
+        import matplotlib.pyplot as plt
+
+        if self.font_path is None and self.font_family is None:
+            return None
+
+        wordcloud = WordCloud(
+            width=1200,
+            height=800,
+            background_color="white",
+            font_path=self.font_path,
+            collocations=False,
+        ).generate_from_frequencies(term_frequencies)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.imshow(wordcloud, interpolation="bilinear")
+        ax.axis("off")
+        self._apply_axis_font(ax, title="痛点高频词词云")
+        path = self.output_dir / filename
+        fig.savefig(path, dpi=self.dpi, bbox_inches="tight")
+        plt.close(fig)
+        return path
