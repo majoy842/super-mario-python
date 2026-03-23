@@ -1,5 +1,22 @@
 # 系统版本日志
 
+## v1.3.0
+
+### 上个版本信息
+- v1.2.0 已经补充了实验指南和文件级变更记录规范，但图表可视化在中文环境下仍可能出现标题或坐标轴乱码问题。
+- 该问题主要出现在 matplotlib / seaborn 默认字体不支持中文时，导致生成图片中的中文显示为方框。
+
+### 本次更新内容
+- 修复图表中文乱码问题：在 `system/visualization.py` 中新增中文字体自动检测与配置逻辑，优先尝试 Windows 常见字体以及 `system/assets/fonts/` 目录中的本地字体文件。
+- 同时设置 `axes.unicode_minus = False`，避免负号显示异常。
+- 更新 `system/README.md`，补充中文字体使用说明，便于在不同环境下手动放置字体文件。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：新增中文字体自动配置与负号显示修复逻辑。
+- `system/README.md`：新增中文字体说明与手动字体放置建议。
+- `system/assets/fonts/.gitkeep`：预留字体目录，方便后续放置字体文件。
+- `system/VERSION_LOG.md`：新增 v1.3.0 版本记录。
+
 ## v1.2.0
 
 ### 上个版本信息

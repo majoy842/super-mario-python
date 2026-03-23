@@ -52,3 +52,9 @@ python -m system.main \
 ## 实验推进说明
 
 - 详细实验步骤与推荐顺序见 `EXPERIMENT_GUIDE.md`。
+
+
+## 中文字体说明
+
+- 系统已在 `visualization.py` 中加入中文字体自动配置逻辑，会优先检测 Windows 常见字体（如 `Microsoft YaHei`、`SimHei`）以及 `system/assets/fonts/` 下的字体文件。
+- 如果你的运行环境仍然出现中文乱码，可将中文字体文件（例如 `SimHei.ttf` 或 `msyh.ttc`）放入 `system/assets/fonts/` 后重新生成图表。
