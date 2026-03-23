@@ -43,3 +43,5 @@ The code needs still alot of refactoring as it is right now, so I appreciate any
 * Version log: `system/VERSION_LOG.md`
 
 * Experiment guide: `system/EXPERIMENT_GUIDE.md`
+
+* Thesis output guide: `system/THESIS_OUTPUT_GUIDE.md`
