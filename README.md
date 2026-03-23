@@ -31,3 +31,19 @@ This is inspired by Meth-Meth-Method's [super mario game](https://github.com/met
 
 If you have any Improvements/Ideas/Refactors feel free to contact me or make a Pull Request.
 The code needs still alot of refactoring as it is right now, so I appreciate any kind of Contribution.
+
+## Additional documentation
+
+* Sentiment analysis system design draft: `docs/sentiment-system-design.md`
+
+## Sentiment analysis system
+
+* Runtime code: `system/`
+* Design document: `docs/sentiment-system-design.md`
+* Version log: `system/VERSION_LOG.md`
+
+* Experiment guide: `system/EXPERIMENT_GUIDE.md`
+
+* Thesis output guide: `system/THESIS_OUTPUT_GUIDE.md`
+
+* Thesis checklist: `system/THESIS_CHECKLIST.md`

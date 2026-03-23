@@ -1,0 +1,147 @@
+# 系统版本日志
+
+## v1.8.0
+
+### 上个版本信息
+- v1.7.0 已补齐词云输出与中文字体支持，但用户进一步明确提出：需要一份可直接用于论文排版的“第4章插图与表格落位清单”。
+- 原有 `THESIS_OUTPUT_GUIDE.md` 更偏解释型说明，信息完整但不够像可直接执行的排版清单。
+
+### 本次更新内容
+- 新增 `system/THESIS_CHECKLIST.md`，把第4章各表、各图、各代码段对应的系统输出文件整理成可直接照着排版的清单。
+- 在清单中明确区分：哪些图表可直接用系统输出、哪些需要手绘、哪些可以改为表格或文字说明。
+- 更新 `system/README.md` 和根目录 `README.md`，增加第4章落位清单入口。
+
+### 本次涉及文件与修改内容
+- `system/THESIS_CHECKLIST.md`：新增第4章插图与表格落位清单。
+- `system/README.md`：新增第4章落位清单入口。
+- `README.md`：新增论文排版清单入口。
+- `system/VERSION_LOG.md`：新增 v1.8.0 版本记录。
+
+## v1.7.0
+
+### 上个版本信息
+- v1.6.0 已补充论文输出与文件对应关系说明，但词云可视化仍未真正纳入系统自动输出链路。
+- 用户补充指出：词云默认同样会遇到中文字体缺失问题，因此不仅图表文字，词云中的中文显示也需要同步解决。
+
+### 本次更新内容
+- 在 `system/visualization.py` 中新增词云导出方法，并复用统一的中文字体解析逻辑。
+- 在 `system/pipeline.py` 中接入词云生成流程，自动输出 `pain_point_wordcloud.png`，并把对应路径写入 `pain_point_summary.json` 与 `run_summary.json`。
+- 更新 `system/THESIS_OUTPUT_GUIDE.md`，明确图4-7 现在可以直接对应系统导出的词云图。
+- 更新 `system/README.md`，补充词云中文字体说明。
+- 更新 `requirements.txt`，加入 `wordcloud` 依赖。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：新增词云导出逻辑，并复用中文字体解析。
+- `system/pipeline.py`：接入自动词云生成与路径写出。
+- `system/THESIS_OUTPUT_GUIDE.md`：更新图4-7 与词云输出文件的对应关系。
+- `system/README.md`：新增词云中文字体说明。
+- `requirements.txt`：新增 `wordcloud` 依赖。
+- `system/VERSION_LOG.md`：新增 v1.7.0 版本记录。
+
+## v1.6.0
+
+### 上个版本信息
+- v1.5.0 已基本解决可视化中文显示问题，但用户在论文撰写阶段仍然难以判断“系统输出文件分别对应论文第 4 章的哪个位置”。
+- 部分结果实际上已经生成，但表现为 CSV / JSON 而不是图片，因此在论文整理时容易误以为系统没有输出。
+
+### 本次更新内容
+- 新增 `system/THESIS_OUTPUT_GUIDE.md`，系统性梳理第 4 章各小节与输出文件之间的对应关系。
+- 明确区分“系统已自动生成的图片”“系统已有结果但不是图片形式”“系统当前未自动生成、需要手动画或二次制图的图”。
+- 更新 `system/README.md` 和根目录 `README.md`，增加论文写作对照指南入口。
+
+### 本次涉及文件与修改内容
+- `system/THESIS_OUTPUT_GUIDE.md`：新增论文实验章节与输出文件对照说明。
+- `system/README.md`：新增论文写作对照说明入口。
+- `README.md`：新增论文输出对照指南入口。
+- `system/VERSION_LOG.md`：新增 v1.6.0 版本记录。
+
+## v1.5.0
+
+### 上个版本信息
+- v1.4.0 已经加入中文字体自动检测，但修复方式主要依赖 matplotlib 全局 `rcParams`。
+- 从用户反馈的图片看，图表标题等文本仍然可能显示为方框，说明仅设置全局字体还不足以覆盖 seaborn / matplotlib 中所有文本对象。
+
+### 本次更新内容
+- 继续修复中文可视化：在 `system/visualization.py` 中增加 `FontProperties` 级别的逐项应用逻辑，对标题、坐标轴标题、刻度标签、图例文本分别设置中文字体。
+- 扩展字体候选文件，增加 `msyh.ttc`、`msyhbd.ttc`、`simsun.ttc` 等 Windows 常见中文字体路径，提高在 Windows 环境中的命中率。
+- 保存图片时统一使用 `bbox_inches="tight"`，避免字体替换后标题或标签被裁切。
+- 更新 `system/README.md`，说明现在不仅是全局字体配置，还会逐项给图表文本应用字体。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：重构中文字体应用逻辑，改为“全局字体 + FontProperties 逐项应用”双保险方案。
+- `system/README.md`：补充更详细的中文字体说明。
+- `system/VERSION_LOG.md`：新增 v1.5.0 版本记录。
+
+## v1.4.0
+
+### 上个版本信息
+- v1.3.0 已修复图表中文乱码问题，但痛点挖掘仍然更像“负向评论粗聚类”，还没有很好对齐“明确问题 + 明确对象 + 明确负向原因”的目标。
+- 高频词中仍容易出现虚词和论坛灌水词，且不同属性的问题会在同一个聚类空间里互相干扰。
+
+### 本次更新内容
+- 重构痛点挖掘流程：从“仅负面评论聚类”改为“`negative + neutral_with_trigger + trigger_match` 候选池”策略，扩大真正痛点表达的覆盖范围。
+- 强化中文停用词与论坛噪声过滤，并新增领域同义归并，减少虚词和论坛闲聊对高频词与聚类结果的污染。
+- 将痛点聚类改为“先按属性分桶，再在属性内聚类”，让音质、佩戴、价格、配置等问题尽量在各自语义空间中聚合。
+- 输出文件从 `negative_comments.csv` 升级为 `pain_point_candidates.csv`，并在 `pain_point_summary.json` 中按属性输出聚类摘要。
+
+### 本次涉及文件与修改内容
+- `system/config.py`：新增领域停用词、论坛噪声词、痛点触发词和同义归并配置。
+- `system/core/preprocessing.py`：新增同义归并预处理逻辑，并默认使用更强的中文停用词。
+- `system/analysis/pain_points.py`：重写痛点候选池构造、属性内聚类和高频词提取逻辑。
+- `system/pipeline.py`：接入新的痛点挖掘策略与输出文件结构。
+- `system/resources/stopwords_zh.txt`：新增中文停用词和论坛噪声词表。
+- `system/README.md`：补充新版痛点挖掘策略说明。
+- `system/VERSION_LOG.md`：新增 v1.4.0 版本记录。
+
+## v1.3.0
+
+### 上个版本信息
+- v1.2.0 已经补充了实验指南和文件级变更记录规范，但图表可视化在中文环境下仍可能出现标题或坐标轴乱码问题。
+- 该问题主要出现在 matplotlib / seaborn 默认字体不支持中文时，导致生成图片中的中文显示为方框。
+
+### 本次更新内容
+- 修复图表中文乱码问题：在 `system/visualization.py` 中新增中文字体自动检测与配置逻辑，优先尝试 Windows 常见字体以及 `system/assets/fonts/` 目录中的本地字体文件。
+- 同时设置 `axes.unicode_minus = False`，避免负号显示异常。
+- 更新 `system/README.md`，补充中文字体使用说明，便于在不同环境下手动放置字体文件。
+
+### 本次涉及文件与修改内容
+- `system/visualization.py`：新增中文字体自动配置与负号显示修复逻辑。
+- `system/README.md`：新增中文字体说明与手动字体放置建议。
+- `system/assets/fonts/.gitkeep`：预留字体目录，方便后续放置字体文件。
+- `system/VERSION_LOG.md`：新增 v1.3.0 版本记录。
+
+## v1.2.0
+
+### 上个版本信息
+- v1.1.0 已经完成真实数据字段适配和严格预处理，但尚未把“每次更新具体修改了哪些文件、每个文件改了什么”写成固定记录格式。
+- 同时，上一版对实验推进顺序说明不够详细，用户仍然不清楚应该先运行哪个命令、再查看哪些结果文件。
+
+### 本次更新内容
+- 新增 `system/EXPERIMENT_GUIDE.md`，详细说明实验应如何一步一步推进，包括先检查命令行、再跑样例数据、再跑真实数据、再查看模型对比、再看细粒度分析和痛点挖掘。
+- 更新 `system/README.md` 和根目录 `README.md`，增加实验指南入口。
+- 约定从本版本开始，后续每次版本更新都必须在版本日志中写明“修改了哪些系统文件，以及每个文件分别做了什么修改”。
+
+### 本次涉及文件与修改内容
+- `system/EXPERIMENT_GUIDE.md`：新增详细实验推进文档。
+- `system/README.md`：新增实验指南入口说明。
+- `README.md`：新增系统实验指南入口。
+- `system/VERSION_LOG.md`：新增 v1.2.0 版本记录，并明确后续版本日志的文件级变更记录要求。
+
+## v1.1.0
+
+### 上个版本信息
+- v1.0.0 完成了系统基础代码搭建，但默认字段仍偏通用，尚未针对真实数据集 `content / subject / sentiment_value` 做充分适配。
+- 旧版预处理对短噪声评论、纯符号评论、超长评论、无意义英文片段以及 `subject=其他` 的重点分析控制仍不够严格。
+
+### 本次更新内容
+- 将系统默认字段切换为真实数据集字段：`content_id`、`content`、`subject`、`sentiment_word`、`sentiment_value`。
+- 新增更严格的数据预处理逻辑：按 `content` 去重、删除纯符号、删除过短文本、过滤典型噪声短语、截断超长文本、清理异常字符。
+- 新增标签标准化逻辑，将 `-1 / 0 / 1` 统一映射为 `negative / neutral / positive`。
+- 调整模型评估逻辑，突出 `Macro-F1`、`Macro-Recall`、`negative recall` 和混淆矩阵，弱化仅看 Accuracy 的风险。
+- 调整细粒度分析逻辑：保留“其他”参与整体统计，但默认在重点属性分析中聚焦 `音质 / 配置 / 价格 / 舒适 / 功能 / 外形`。
+
+## v1.0.0
+
+### 版本概述
+- 初始版本，完成耳机评论情感分析系统的基础代码搭建。
+- 系统实现遵循既定设计思路：数据导入、文本预处理、情感分类、模型对比、细粒度分析、痛点挖掘、结果展示与导出。
