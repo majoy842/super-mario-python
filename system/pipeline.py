@@ -29,6 +29,7 @@ class SentimentAnalysisSystem:
             drop_symbol_only=config.preprocess.drop_symbol_only,
             drop_meaningless_english=config.preprocess.drop_meaningless_english,
             noise_phrases=config.preprocess.noise_phrases,
+            synonym_map=config.preprocess.synonym_map,
         )
         self.evaluator = ModelEvaluator()
         self.aspect_analyzer = FineGrainedAnalyzer(
@@ -38,6 +39,10 @@ class SentimentAnalysisSystem:
         )
         self.pain_point_miner = PainPointMiner(
             negative_labels=config.analysis.negative_labels,
+            neutral_labels=config.analysis.neutral_labels,
+            trigger_terms=config.analysis.pain_point_trigger_terms,
+            forum_noise_terms=config.analysis.forum_noise_terms,
+            synonym_map=config.analysis.pain_point_synonyms,
             top_k=config.analysis.pain_point_top_k,
             cluster_count=config.analysis.cluster_count,
         )
@@ -143,18 +148,22 @@ class SentimentAnalysisSystem:
         return analyzed_df, distribution_df, summary_df, focus_distribution_df
 
     def run_pain_point_mining(self, prediction_df):
-        negative_df, high_freq_terms, cluster_summary = self.pain_point_miner.mine(
+        candidate_df, high_freq_terms, cluster_summary = self.pain_point_miner.mine(
             prediction_df,
             text_column=self.config.data.text_column,
             label_column="predicted_label",
+            aspect_column=self.config.data.aspect_column,
         )
-        if len(negative_df) > 0:
-            self.exporter.to_csv(negative_df, "negative_comments.csv")
+        if len(candidate_df) > 0:
+            self.exporter.to_csv(candidate_df, "pain_point_candidates.csv")
         self.exporter.to_json(
-            {"high_frequency_terms": high_freq_terms, "cluster_summary": cluster_summary},
+            {
+                "high_frequency_terms": high_freq_terms,
+                "aspect_cluster_summary": cluster_summary,
+            },
             "pain_point_summary.json",
         )
-        return negative_df, high_freq_terms, cluster_summary
+        return candidate_df, high_freq_terms, cluster_summary
 
     def run(self):
         raw_df, processed_df, dataset_summary = self.load_and_preprocess()
@@ -162,7 +171,7 @@ class SentimentAnalysisSystem:
         best_model = comparison_df.iloc[0]["model"]
         batch_results = self.batch_analyze(processed_df, model_name=best_model)
         _, aspect_distribution, aspect_summary, focus_aspect_distribution = self.run_fine_grained_analysis(batch_results)
-        negative_df, high_freq_terms, cluster_summary = self.run_pain_point_mining(batch_results)
+        pain_point_df, high_freq_terms, cluster_summary = self.run_pain_point_mining(batch_results)
         self.exporter.to_json(
             {
                 "dataset_summary": asdict(dataset_summary),
@@ -173,8 +182,13 @@ class SentimentAnalysisSystem:
                     "drop_meaningless_english": self.config.preprocess.drop_meaningless_english,
                     "noise_phrases": self.config.preprocess.noise_phrases,
                 },
+                "pain_point_strategy": {
+                    "candidate_pool": "negative + neutral_with_trigger + trigger_match",
+                    "aspect_first_clustering": True,
+                    "trigger_terms": self.config.analysis.pain_point_trigger_terms,
+                },
                 "best_model": best_model,
-                "negative_comment_count": int(len(negative_df)),
+                "pain_point_candidate_count": int(len(pain_point_df)),
                 "high_frequency_terms": high_freq_terms,
                 "cluster_summary": cluster_summary,
             },
@@ -188,6 +202,6 @@ class SentimentAnalysisSystem:
             "aspect_distribution_rows": len(aspect_distribution),
             "focus_aspect_distribution_rows": len(focus_aspect_distribution),
             "aspect_summary_rows": len(aspect_summary),
-            "negative_comment_count": len(negative_df),
+            "pain_point_candidate_count": len(pain_point_df),
             "output_dir": str(Path(self.config.export.output_dir).resolve()),
         }

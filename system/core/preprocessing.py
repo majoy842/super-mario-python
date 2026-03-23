@@ -18,6 +18,7 @@ class TextPreprocessor:
         drop_symbol_only: bool = True,
         drop_meaningless_english: bool = True,
         noise_phrases: list[str] | None = None,
+        synonym_map: dict[str, str] | None = None,
     ) -> None:
         self.lowercase = lowercase
         self.remove_digits = remove_digits
@@ -27,6 +28,7 @@ class TextPreprocessor:
         self.drop_symbol_only = drop_symbol_only
         self.drop_meaningless_english = drop_meaningless_english
         self.noise_phrases = {item.strip().lower() for item in (noise_phrases or []) if item.strip()}
+        self.synonym_map = synonym_map or {}
         self.stopwords = self._load_stopwords(stopwords_path)
         self.custom_dict_path = custom_dict_path
 
@@ -39,6 +41,12 @@ class TextPreprocessor:
     @staticmethod
     def _contains_chinese(text: str) -> bool:
         return bool(re.search(r"[\u4e00-\u9fff]", text))
+
+    def apply_synonym_map(self, text: str) -> str:
+        normalized_text = text
+        for source, target in self.synonym_map.items():
+            normalized_text = normalized_text.replace(source, target)
+        return normalized_text
 
     def is_symbol_only(self, text: str) -> bool:
         stripped = re.sub(r"\s+", "", str(text))
@@ -57,6 +65,7 @@ class TextPreprocessor:
         content = str(text).strip()
         if self.lowercase:
             content = content.lower()
+        content = self.apply_synonym_map(content)
         content = re.sub(r"\s+", " ", content)
         content = re.sub(r"[\t\r\n]+", " ", content)
         if self.remove_digits:
