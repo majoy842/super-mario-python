@@ -5,3 +5,9 @@ settings.json
 .idea/
 .venv/
 *.DS_Store
+
+# sentiment system generated outputs
+system/outputs/**
+!system/outputs/
+!system/outputs/sample_run/
+!system/outputs/sample_run/.gitkeep

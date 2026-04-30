@@ -1,0 +1,12 @@
+pygame
+scipy
+pandas
+scikit-learn
+jieba
+matplotlib
+seaborn
+openpyxl
+wordcloud
+torch
+transformers
+streamlit
